@@ -8,20 +8,19 @@ function Question({ question, onAnswered }) {
   useEffect(() => {
     if (timeRemaining === 0) {
       setTimeRemaining(10);
-      onAnswered(false);
-      return;  // end early
+      onAnswered(false)
     }
 
-    // set up timeout to run every second
-    const runTimer = setTimeout(() => {
-      setTimeRemaining((timeRemaining) => (timeRemaining - 1))
+    const timer = setTimeout(() => {
+      setTimeRemaining(() => (timeRemaining - 1))
     }, 1000);
 
-    // add cleanup
-    return function () {
-      clearTimeout(runTimer)
-    };
-  }, [timeRemaining, onAnswered] );
+    return function cleanup() {
+      clearTimeout(timer)
+    }
+
+  }, [timeRemaining, onAnswered])
+  
 
   function handleAnswer(isCorrect) {
     setTimeRemaining(10);
