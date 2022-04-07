@@ -1,9 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+// import { useEffect } from "react/cjs/react.production.min";
 
 function Question({ question, onAnswered }) {
   const [timeRemaining, setTimeRemaining] = useState(10);
 
   // add useEffect code
+  useEffect(() => {
+    if (timeRemaining === 0) {
+      setTimeRemaining(10);
+      onAnswered(false);
+      return;  // end early
+    }
+
+    // set up timeout to run every second
+    const runTimer = setTimeout(() => {
+      setTimeRemaining((timeRemaining) => (timeRemaining - 1))
+    }, 1000);
+
+    // add cleanup
+    return function () {
+      clearTimeout(runTimer)
+    };
+  }, [timeRemaining, onAnswered] );
 
   function handleAnswer(isCorrect) {
     setTimeRemaining(10);
